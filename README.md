@@ -74,6 +74,26 @@ To signal #UASF on linux on your node before binaries are released:
 
 To manually set it, open `~/.bitcoin/bitcoin.conf` and on a new line set `uacomment=UASF-SegWit-BIP148` without quotes, then restart your node.
 
+### How can I run or re-compile bitcoind with UASF BIP148?
+
+If you feel comfortable compiling your own bitcoind you can grab the latest release tarball from 
+https://github.com/UASF/bitcoin/releases
+Unpack it, run ./autogen.sh; ./configure; make as you are used to
+
+If you prefer to patch existing vanilla source for 0.14.1rc1: 
+Download the patch https://github.com/bitcoin/bitcoin/compare/ccb47bf830...UASF:v0.14.0.uasfsegwit3.diff and apply it to your Bitcoin Core 0.14.1rc1 installation, recompile and run.
+
+    # Sample code listing for re-compiling with UASF-BIP148
+    cd /usr/src/bitcoin-0.14.1
+    wget https://github.com/bitcoin/bitcoin/compare/ccb47bf830...UASF:v0.14.0.uasfsegwit3.diff
+    patch -p 1 < ccb47bf830...UASF%3Av0.14.0.uasfsegwit3.diff
+    make
+    strip src/bitcoind src/bitcoin-cli src/bitcoin-tx
+    cp -a src/bitcoind src/bitcoin-cli src/bitcoin-tx /path/to/binaries
+
+A detailed explanation of the code changes applied can be found in this thread:
+https://www.reddit.com/r/Bitcoin/comments/62hipj/antifud_the_bip148_enforcing_client_a_walkthrough/
+
 ### Can BIP148 be cancelled?
 
 Yes. In the event that the economic majority does not support BIP148, users should remove software that enforces BIP148. A flag day activation for SegWit would be the next logical steps and require coordination of the community, most likely towards the end of 2018.
